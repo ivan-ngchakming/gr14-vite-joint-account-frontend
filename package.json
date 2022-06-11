@@ -5,7 +5,8 @@
 	"main": "app.js",
 	"scripts": {
 		"test": "npx vuilder test",
-		"deploy": "npx ts-node scripts/deploy.ts",
+		"deploy:cafe": "npx ts-node scripts/deploy.ts",
+		"deploy:joint-accounts": "npx ts-node scripts/deploy-joints.ts",
 		"compile": "npx vuilder compile Cafe.solpp"
 	},
 	"author": "shan@vite.org",

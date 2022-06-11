@@ -26,4 +26,4 @@ async function run(): Promise<void> {
 
 run().then(() => {
 	console.log('done');
-});
+}).catch(err => console.error(err));
