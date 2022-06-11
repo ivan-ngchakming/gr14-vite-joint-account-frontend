@@ -4,9 +4,12 @@
 	"description": "",
 	"main": "app.js",
 	"scripts": {
+		"start": "npx vuilder node",
 		"test": "npx vuilder test",
 		"deploy:cafe": "npx ts-node scripts/deploy.ts",
 		"deploy:joint-accounts": "npx ts-node scripts/deploy-joints.ts",
+		"deploy:local:cafe": "npx ts-node scripts/deploy-cafe.local.ts",
+		"deploy:local:joint-accounts": "npx ts-node scripts/deploy-joints.local.ts",
 		"compile": "npx vuilder compile Cafe.solpp"
 	},
 	"author": "shan@vite.org",
