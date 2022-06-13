@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import Modal from '../components/Modal';
 import TextInput, { TextInputRefObject } from '../components/TextInput';
 import CafeContract from '../contracts/Cafe';
+import JointAccountsContract from '../contracts/JointAccounts';
 import { connect } from '../utils/globalContext';
 import { useTitle } from '../utils/hooks';
 import { validateInputs } from '../utils/misc';
@@ -85,6 +86,41 @@ const AppHome = ({ i18n, vcInstance, callContract, setState }: Props) => {
 					</p>
 				</Modal>
 			)}
+
+			<button
+				className={`${
+					vcInstance ? 'bg-skin-medlight brightness-button' : 'bg-gray-400'
+				} h-8 px-3 rounded-md font-semibold text-white shadow ml-2`}
+				disabled={!vcInstance}
+				onClick={async () => {
+					if (validateInputs([])) {
+						promptTxConfirmationSet(true);
+						try {
+							await callContract(
+								JointAccountsContract,
+								'createAccount',
+								[
+									['vite_ae5c625e30c55640724d1d2c54281e51651b8b8b889484ba70'], // members
+									1, // approvalThreshold
+									0, // isStatic
+									0, // isMemberOnlyDeposit
+								],
+								constant.Vite_TokenId,
+								'0'
+							);
+						} catch (e) {
+							console.error(e);
+						}
+						setState({ toast: i18n.transactionConfirmed });
+						// Reset inputs
+						// beneficiaryAddressSet('');
+						amountSet('');
+						promptTxConfirmationSet(false);
+					}
+				}}
+			>
+				Create Account
+			</button>
 		</div>
 	);
 };

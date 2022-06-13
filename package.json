@@ -10,7 +10,8 @@
 		"deploy:joint-accounts": "npx ts-node scripts/deploy-joints.ts",
 		"deploy:local:cafe": "npx ts-node scripts/deploy-cafe.local.ts",
 		"deploy:local:joint-accounts": "npx ts-node scripts/deploy-joints.local.ts",
-		"compile": "npx vuilder compile Cafe.solpp"
+		"compile:cafe": "npx vuilder compile Cafe.solpp",
+		"compile:join-accounts": "npx vuilder compile JointAccounts.solpp"
 	},
 	"author": "shan@vite.org",
 	"license": "ISC",

@@ -60,6 +60,9 @@ const PageContainer = ({
 					<A to="/app" className="text-skin-secondary">
 						{i18n.app}
 					</A>
+					<A to="/create-account" className="text-skin-secondary">
+						{i18n.createAccount}
+					</A>
 					<A to="/history" className="text-skin-secondary">
 						{i18n.history}
 					</A>

@@ -1,6 +1,7 @@
 const en = {
 	connectWallet: 'Connect Wallet',
-	launchApp: 'Launch App',
+	launchApp: 'Create Account',
+	createAccount : 'Create Account',
 	scanWithYourViteWalletApp: 'Scan with your Vite Wallet app',
 	confirmTransactionOnYourViteWalletApp: 'Confirm transaction on your Vite Wallet app',
 	transactionConfirmed: 'Transaction confirmed',

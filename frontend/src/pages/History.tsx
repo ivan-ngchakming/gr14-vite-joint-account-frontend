@@ -1,9 +1,8 @@
 import { RefreshIcon } from '@heroicons/react/outline';
 import { useCallback, useEffect, useState } from 'react';
-import Cafe from '../contracts/Cafe';
+import JointAccounts from '../contracts/JointAccounts';
 import { connect } from '../utils/globalContext';
 import { useTitle } from '../utils/hooks';
-import { shortenAddress } from '../utils/strings';
 import { CoffeeBuyEvent, State } from '../utils/types';
 import { getPastEvents } from '../utils/viteScripts';
 
@@ -15,13 +14,13 @@ const History = ({ i18n, viteApi, networkType, setState }: Props) => {
 
 	const updateEvents = useCallback(() => {
 		eventsSet(undefined);
-		const contractAddress = Cafe.address[networkType];
-		getPastEvents(viteApi, contractAddress, Cafe.abi, 'Buy', {
+		const contractAddress = JointAccounts.address[networkType];
+		getPastEvents(viteApi, contractAddress, JointAccounts.abi, 'allEvents', {
 			fromHeight: 0,
 			toHeight: 0,
 		})
 			.then((events) => {
-				// console.log('events:', events);
+				console.log('events:', events);
 				eventsSet(events);
 			})
 			.catch((e) => {
@@ -39,6 +38,9 @@ const History = ({ i18n, viteApi, networkType, setState }: Props) => {
 			<p className="text-2xl">{i18n.history}</p>
 			<div className="">
 				<div className="flex">
+				<div className="flex-1">
+						<p className="">Event</p>
+					</div>
 					<div className="flex-1">
 						<p className="">{i18n.cups}</p>
 					</div>
@@ -55,17 +57,8 @@ const History = ({ i18n, viteApi, networkType, setState }: Props) => {
 				{events ? (
 					events.map((event) => {
 						return (
-							<div className="flex" key={event.accountBlockHash}>
-								<div className="flex-1">
-									<p className="">{event.returnValues.num}</p>
-								</div>
-								<div className="flex-1">
-									<p className="">{shortenAddress(event.returnValues.from)}</p>
-								</div>
-								<div className="flex-1">
-									<p className="">{shortenAddress(event.returnValues.to)}</p>
-								</div>
-							</div>
+							<div>
+								<pre>{JSON.stringify(event, null, 4)}</pre></div>
 						);
 					})
 				) : (

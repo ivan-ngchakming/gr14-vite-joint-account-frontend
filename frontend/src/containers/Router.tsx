@@ -11,7 +11,9 @@ import { VCSessionKey } from '../utils/viteConnect';
 import { PROD } from '../utils/constants';
 import PageContainer from './PageContainer';
 import CafeContract from '../contracts/Cafe';
+import JointAccountsContract from '../contracts/JointAccounts';
 import History from '../pages/History';
+import CreateAccount from '../pages/CreateAccount';
 
 const providerWsURLs = {
 	...(PROD ? {} : { localnet: 'ws://localhost:23457' }),
@@ -27,9 +29,8 @@ const Router = ({ setState, vcInstance, networkType }: Props) => {
 	const connectedAccount = useMemo(() => vcInstance?.accounts[0], [vcInstance]);
 
 	const rpc = useMemo(
-		() =>
-			new WS_RPC(
-				networkType === 'mainnet' ? providerWsURLs.mainnet : providerWsURLs.testnet,
+		() => new WS_RPC(
+				providerWsURLs[networkType],
 				providerTimeout,
 				providerOptions
 			),
@@ -38,7 +39,7 @@ const Router = ({ setState, vcInstance, networkType }: Props) => {
 
 	const viteApi = useMemo(() => {
 		return new ViteAPI(rpc, () => {
-			// console.log('client connected');
+			console.log('client connected');
 		});
 	}, [rpc]);
 
@@ -92,7 +93,7 @@ const Router = ({ setState, vcInstance, networkType }: Props) => {
 
 	const callContract = useCallback(
 		(
-			contract: typeof CafeContract,
+			contract: typeof CafeContract | typeof JointAccountsContract,
 			methodName: string,
 			params: any[] = [],
 			tokenId?: string,
@@ -101,6 +102,7 @@ const Router = ({ setState, vcInstance, networkType }: Props) => {
 			if (!vcInstance) {
 				return;
 			}
+			// @ts-ignore
 			const methodAbi = contract.abi.find(
 				(x: any) => x.name === methodName && x.type === 'function'
 			);
@@ -111,6 +113,7 @@ const Router = ({ setState, vcInstance, networkType }: Props) => {
 			if (!toAddress) {
 				throw new Error(`${networkType} contract address not found`);
 			}
+
 			const block = accountBlock.createAccountBlock('callContract', {
 				address: connectedAccount,
 				abi: methodAbi,
@@ -123,6 +126,7 @@ const Router = ({ setState, vcInstance, networkType }: Props) => {
 		},
 		[connectedAccount, networkType, vcInstance]
 	);
+
 	useEffect(() => {
 		setState({ callContract });
 	}, [setState, callContract]);
@@ -134,6 +138,7 @@ const Router = ({ setState, vcInstance, networkType }: Props) => {
 					<Route path="/" element={<Landing />} />
 					<Route path="/app" element={<AppHome />} />
 					<Route path="/history" element={<History />} />
+					<Route path="/create-account" element={<CreateAccount />} />
 					<Route path="*" element={<Navigate to="/" />} />
 				</Routes>
 			</PageContainer>
